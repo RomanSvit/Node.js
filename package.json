@@ -1,0 +1,26 @@
+{
+  "name": "node",
+  "version": "1.0.0",
+  "description": "\u0016\u0016nodejs tutorial package",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/RomanSvit/Node.js.git"
+  },
+  "keywords": [
+    "nodejs",
+    "js"
+  ],
+  "author": "Roman Svitelskyi",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/RomanSvit/Node.js/issues"
+  },
+  "homepage": "https://github.com/RomanSvit/Node.js#readme",
+  "devDependencies": {
+    "nodemon": "^2.0.2"
+  }
+}
