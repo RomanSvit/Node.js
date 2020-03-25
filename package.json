@@ -1,10 +1,11 @@
 {
   "name": "node",
   "version": "1.0.0",
-  "description": "\u0016\u0016nodejs tutorial package",
+  "description": "node.js tutorial package",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node index.js",
+    "dev": "nodemon index.js"
   },
   "repository": {
     "type": "git",
@@ -22,5 +23,8 @@
   "homepage": "https://github.com/RomanSvit/Node.js#readme",
   "devDependencies": {
     "nodemon": "^2.0.2"
+  },
+  "dependencies": {
+    "yargs": "^15.3.1"
   }
 }
