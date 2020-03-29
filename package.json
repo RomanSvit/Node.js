@@ -1,0 +1,30 @@
+{
+  "name": "node",
+  "version": "1.0.0",
+  "description": "node.js tutorial package",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/RomanSvit/Node.js.git"
+  },
+  "keywords": [
+    "nodejs",
+    "js"
+  ],
+  "author": "Roman Svitelskyi",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/RomanSvit/Node.js/issues"
+  },
+  "homepage": "https://github.com/RomanSvit/Node.js#readme",
+  "devDependencies": {
+    "nodemon": "^2.0.2"
+  },
+  "dependencies": {
+    "yargs": "^15.3.1"
+  }
+}
