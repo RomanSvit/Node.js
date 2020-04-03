@@ -2,9 +2,7 @@ const path = require("path");
 const fs = require("fs");
 
 const contactsPath = path.join(__dirname, "db", "contacts.json");
-// console.log(contactsPath);
 
-// TODO: задокументировать каждую функцию
 function listContacts() {
   return JSON.parse(
     fs.readFileSync(contactsPath, "utf-8", async err => {
