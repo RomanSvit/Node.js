@@ -2,12 +2,10 @@ const path = require("path");
 const fs = require("fs");
 
 const contactsPath = path.join(__dirname, "db", "contacts.json");
-// console.log(contactsPath);
 
-// TODO: задокументировать каждую функцию
 function listContacts() {
   return JSON.parse(
-    fs.readFileSync(contactsPath, "utf-8", async err => {
+    fs.readFileSync(contactsPath, "utf-8", async (err) => {
       if (err) throw new Error(err);
     })
   );
@@ -26,14 +24,14 @@ function getContactById(contactId) {
   return null;
 }
 
-function addContact(data = {name, email, phone}) {
+function addContact(data = { name, email, phone }) {
   const contacts = listContacts();
   const newContact = { id: contacts.length + 1, ...data };
 
   fs.writeFileSync(
     contactsPath,
     JSON.stringify([...contacts, newContact]),
-    err => {
+    (err) => {
       if (err) throw new Error(err);
     }
   );
@@ -53,15 +51,33 @@ function removeContact(contactId) {
     }
   }
 
-  fs.writeFileSync(contactsPath, JSON.stringify(newContacts), err => {
+  fs.writeFileSync(contactsPath, JSON.stringify(newContacts), (err) => {
     if (err) throw new Error(err);
   });
   console.log(`Contact with id:${contactId} was remove!`);
+}
+
+function updateContact(data) {
+  const { id } = data;
+  const contacts = listContacts();
+  const contactById = getContactById(id);
+  const currentContact = { ...contactById, ...data };
+
+  if (contactById.id === id) {
+    const updateCont = Object.assign(contactById, currentContact);
+    const updatedContacts = contacts.filter((item) => item.id !== id);
+    const newContacts = [...updatedContacts, updateCont];
+    fs.writeFileSync(contactsPath, JSON.stringify(newContacts), (err) => {
+      if (err) throw new Error(err);
+    });
+    return updateCont;
+  }
 }
 
 module.exports = {
   listContacts,
   getContactById,
   addContact,
-  removeContact
+  removeContact,
+  updateContact,
 };

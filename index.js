@@ -1,34 +1,30 @@
-const argv = require("yargs").argv;
-const contactsMethods = require("./contacts");
+const express = require("express");
+const cors = require("cors");
+const morgan = require("morgan");
+const argv = require("yargs");
+const bodyParser = require("body-parser");
+require("dotenv").config();
 
-const listContacts = contactsMethods.listContacts;
-const getContactById = contactsMethods.getContactById;
-const addContact = contactsMethods.addContact;
-const removeContact = contactsMethods.removeContact;
-// TODO: рефакторить
-function invokeAction({ action, id, name, email, phone }) {
-  switch (action) {
-    case "list":
-      console.table(listContacts());
-      break;
+const routContacts = require("./routes/contacts")
+const routContactsId = require("./routes/contactId")
+const routPostContact = require("./routes/postContacts")
+const routDelete = require("./routes/deleteRout")
+const routPatchUp = require("./routes/pathcRout")
 
-    case "get":
-      console.table(getContactById(id));
-      break;
+const app = express();
+app.use(bodyParser.json());
 
-    case "add":
-      addContact({ name, email, phone });
-      console.table(listContacts());
-      break;
+app.use(
+  "/api",
+  routContacts,
+  routContactsId,
+  routPostContact,
+  routDelete,
+  routPatchUp
+);
 
-    case "remove":
-      removeContact(id);
-      console.table(listContacts());
-      break;
+const PORT = process.env.PORT || 3300;
 
-    default:
-      console.warn("\x1B[31m Unknown action type!");
-  }
-}
-
-invokeAction(argv);
+app.listen(PORT, () => {
+  console.log("Server has been started on port -", PORT);
+});
