@@ -41,7 +41,7 @@ module.exports = class UserServer {
 
   async initDataBase() {
     try {
-      await mongoose.connect(process.env.MONGODB_URL, {
+      await mongoose.connect(process.env.MONGODB_URL2, {
         useNewUrlParser: true,
         useUnifiedTopology: true,
       });
