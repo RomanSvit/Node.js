@@ -7,5 +7,5 @@ email: {type: String, required: true},
 phone: {type: String, required: true}
 })
 
-const contactModel = mongoose.model("ContactModel", contactSchema);
+const contactModel = mongoose.model("Contact", contactSchema);
 module.exports = contactModel;

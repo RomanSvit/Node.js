@@ -1,11 +1,6 @@
 const express = require("express");
 const mongoose = require("mongoose");
-
-const routContacts = require("./api/routes/contacts");
-const routContactsId = require("./api/routes/contactId");
-const routPostContact = require("./api/routes/postContacts");
-const routDelete = require("./api/routes/deleteRout");
-const routPatchUp = require("./api/routes/pathcRout");
+const contactsRouters = require("./api/routers");
 
 require("dotenv").config();
 const server = express();
@@ -14,11 +9,11 @@ module.exports = class UserServer {
   constructor() {
     this.server = null;
   }
-   start() {
+  start() {
     this.initServer();
     this.initMiddlwares();
     this.initRoutes();
-   this.initDataBase();
+    this.initDataBase();
     this.startListening();
   }
 
@@ -29,14 +24,7 @@ module.exports = class UserServer {
     this.server.use(express.json());
   }
   initRoutes() {
-    this.server.use(
-      "/api",
-      routContacts,
-      routContactsId,
-      routPostContact,
-      routDelete,
-      routPatchUp
-    );
+    this.server.use("/api/contacts", contactsRouters);
   }
 
   async initDataBase() {
