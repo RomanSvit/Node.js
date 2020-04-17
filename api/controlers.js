@@ -29,7 +29,7 @@ class CocntactController {
   // function add contact and save
   async addContact(req, res, next) {
     try {
-      const newContact = await contactModel.save(req.body);
+      const newContact = await contactModel.create(req.body);
       return res.status(201).json(newContact);
     } catch (err) {
       next(err);

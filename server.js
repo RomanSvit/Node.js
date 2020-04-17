@@ -32,6 +32,7 @@ module.exports = class UserServer {
       await mongoose.connect(process.env.MONGODB_URL2, {
         useNewUrlParser: true,
         useUnifiedTopology: true,
+        useFindAndModify: false
       });
       console.log("Database connected!!!");
     } catch (error) {
