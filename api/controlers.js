@@ -27,7 +27,7 @@ class CocntactController {
     }
   }
   // function add contact and save
-  async addContact() {
+  async addContact(req, res, next) {
     try {
       const newContact = await contactModel.save(req.body);
       return res.status(201).json(newContact);
@@ -73,6 +73,7 @@ class CocntactController {
     if (!ObjectId.isValid(contactId)) {
       return res.status("400").send();
     }
+    next();
   }
 }
 module.exports = new CocntactController();
