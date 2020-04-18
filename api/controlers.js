@@ -21,7 +21,7 @@ class CocntactController {
       if (!contact) {
         return res.status("400").send();
       }
-      return res.status("200").json(contactById);
+      return res.status("200").json(contact);
     } catch (err) {
       next(err);
     }
