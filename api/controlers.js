@@ -8,7 +8,7 @@ class CocntactController {
   async listContacts(req, res, next) {
     try {
       const contacts = await contactModel.find();
-      res.status(201).json(contacts);
+      res.status(200).json(contacts);
     } catch (err) {
       next(err);
     }
@@ -19,7 +19,7 @@ class CocntactController {
       const { contactId } = req.params;
       const contact = await contactModel.findById(contactId);
       if (!contact) {
-        return res.status("400").send();
+        return res.status("404").send();
       }
       return res.status("200").json(contact);
     } catch (err) {
@@ -71,7 +71,7 @@ class CocntactController {
   async validateId(req, res, next) {
     const { contactId } = req.params;
     if (!ObjectId.isValid(contactId)) {
-      return res.status("400").send();
+      return res.status("400").send({ message: "Don't valid id!" });
     }
     next();
   }
