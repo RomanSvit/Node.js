@@ -9,7 +9,7 @@ router.post(
   UserController.createUser
 );
 router.post("/auth/login", UserController.validateLogin, UserController.userLogin);
-// router.post("/auth/logout", UserController.verifyToken, UserController.logout);
-// router.get("/current", UserController.verifyToken, UserController.getUser);
+router.post("/auth/logout", UserController.verifyUserToken, UserController.logout);
+router.get("/current", UserController.verifyUserToken, UserController.getCurrentUser);
 
 module.exports = router;

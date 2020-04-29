@@ -16,7 +16,7 @@ class UserController {
     return this._createUser.bind(this);
   }
 
-// function create new user
+  // function create new user
   async _createUser(req, res, next) {
     try {
       const { email, password, subscription } = req.body;
@@ -62,8 +62,27 @@ class UserController {
           subscription: user.subscription,
         },
       });
-    } catch (err){
+    } catch (err) {
       next(err);
+    }
+  }
+
+  async verifyUserToken(req, res, next) {
+    const authorizationHeader = req.get("Authorization");
+    if (!authorizationHeader) {
+      return res.status(401).json({ message: "Not authorized" });
+    }
+    const token = authorizationHeader.replace("Bearer ", "");
+    try {
+      const userId = jwt.verify(token, process.env.JWT_SECRET).id;
+      const user = await userModel.findById(userId);
+      if (!user || user.token !== token) {
+        return res.status(401).json({ message: "Not authorized" });
+      }
+      req.user = user;
+      next();
+    } catch (err) {
+      return res.status(401).json({ message: "Not authorized" });
     }
   }
 
@@ -95,6 +114,27 @@ class UserController {
       next();
     } catch (err) {
       res.status(422).json({ message: "Missing required fields" });
+    }
+  }
+
+  async logout(req, res, next) {
+    try {
+      const user = req.user;
+      await userModel.findByIdAndUpdate(user._id, { token: null });
+      res.status(200).json({ message: "Logout success" });
+    } catch (err) {
+      next(err);
+    }
+  }
+  async getCurrentUser(req, res, next) {
+    try {
+      const userId = req.user._id;
+      const user = await userModel.findById(userId);
+      res
+        .status(200)
+        .json({ email: user.email, subscription: user.subscription });
+    } catch (err) {
+      next(err);
     }
   }
 }
