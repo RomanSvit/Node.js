@@ -25,6 +25,7 @@ module.exports = class UserServer {
   }
   initRoutes() {
     this.server.use("/api/contacts", contactsRouters);
+    this.server.use("/", userRoutes);
   }
 
   async initDataBase() {
