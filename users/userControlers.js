@@ -3,9 +3,10 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
 const userModel = require("./userModel");
-const {
-  Types: { ObjectId },
-} = require("mongoose");
+
+const path = require("path");
+const fs = require("fs");
+const { promises: fsPromises } = require("fs");
 const imagemin = require("imagemin");
 const imageminJpegtran = require("imagemin-jpegtran");
 const imageminPngquant = require("imagemin-pngquant");
@@ -69,6 +70,7 @@ class UserController {
         user: {
           email: user.email,
           subscription: user.subscription,
+          avatarURL: user.avatarURL,
         },
       });
     } catch (err) {
