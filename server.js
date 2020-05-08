@@ -1,7 +1,7 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const contactsRouters = require("./api/routers");
-
+const userRouters = require("./users/userRoutes")
 require("dotenv").config();
 const server = express();
 
@@ -22,10 +22,12 @@ module.exports = class UserServer {
   }
   initMiddlwares() {
     this.server.use(express.json());
+    this.server.use(express.static("public"));
+    this.server.use(express.static("tmp"));
   }
   initRoutes() {
     this.server.use("/api/contacts", contactsRouters);
-    this.server.use("/", userRoutes);
+    this.server.use("/", userRouters);
   }
 
   async initDataBase() {
@@ -33,7 +35,7 @@ module.exports = class UserServer {
       await mongoose.connect(process.env.MONGODB_URL2, {
         useNewUrlParser: true,
         useUnifiedTopology: true,
-        useFindAndModify: false
+        useFindAndModify: false,
       });
       console.log("Database connected!!!");
     } catch (error) {

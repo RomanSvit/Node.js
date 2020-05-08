@@ -6,6 +6,9 @@ const userModel = require("./userModel");
 const {
   Types: { ObjectId },
 } = require("mongoose");
+const imagemin = require("imagemin");
+const imageminJpegtran = require("imagemin-jpegtran");
+const imageminPngquant = require("imagemin-pngquant");
 
 class UserController {
   constructor() {
@@ -24,16 +27,22 @@ class UserController {
       if (currentEmail) {
         return res.status("400").json({ message: "Email in use" });
       }
+      const newAvatar = `avatar_${Date.now()}.png`;
+      avatar
+        .create("gabriel")
+        .then((buffer) => fs.writeFileSync(`./tmp/${newAvatar}`, buffer));
       const userPassword = await bcrypt.hash(password, this._costFactor);
       const newUser = await userModel.create({
         email,
         password: userPassword,
+        avatarURL: `${process.env.BASE_URL}/${newAvatar}`,
         subscription,
       });
       res.status(201).json({
         user: {
           email: newUser.email,
           subscription: newUser.subscription,
+          avatarURL: newUser.avatarURL,
         },
       });
     } catch (err) {
@@ -133,6 +142,42 @@ class UserController {
       res
         .status(200)
         .json({ email: user.email, subscription: user.subscription });
+    } catch (err) {
+      next(err);
+    }
+  }
+  async minifyImg(req, res, next) {
+    try {
+      const parsedUrl = req.user.avatarURL.split("/");
+      const oldAvatar = parsedUrl[parsedUrl.length - 1];
+      await fsPromises.unlink(`tmp/${oldAvatar}`);
+
+      await imagemin([`tmp/${req.file.filename}`], {
+        destination: "public/images",
+        plugins: [
+          imageminJpegtran(),
+          imageminPngquant({
+            quality: [0.6, 0.8],
+          }),
+        ],
+      });
+
+      const { filename, path: tmpPath } = req.file;
+      req.file.path = path.join(__dirname, "..", "public", "images", filename);
+      req.file.destination = path.join(__dirname, "..", "public", "images");
+      await fsPromises.unlink(tmpPath);
+      next();
+    } catch (err) {
+      next(err);
+    }
+  }
+
+  async changeAvatar(req, res, next) {
+    try {
+      await userModel.findByIdAndUpdate(req.user._id, {
+        avatarURL: req.file.path,
+      });
+      res.status(201).json({ message: "Avatar changed" });
     } catch (err) {
       next(err);
     }
